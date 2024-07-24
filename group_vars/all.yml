@@ -1,0 +1,16 @@
+# Variable setting the name of the folder where all DVM tools will be installed
+dvm_folder: "dvm"
+
+## System Variables ##
+
+# Patch Super Group
+system_pSuperGroup: FFFE
+
+# Announcment Talkgroup
+system_announcementGroup: FFFE
+
+# P25 Network ID (WACN)
+system_WACN: BB800
+
+# P25 System ID
+system_sysId: 001
