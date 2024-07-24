@@ -1,0 +1,45 @@
+---
+- hosts: fne
+  become: true
+  vars:
+    ### Role Variables
+    # Set this variable to install/reinstall the DVM Project FNE to the host. This might be useful to turn off if you use the role to regenerate the configs.
+    install: true
+    # Set this to true if Netbird is installed on the host
+    use_netbird: true
+    # Set this variable to install the DVM Provisioning Manager to the FNE host
+    dvmprov: true
+    # Set this variable to force a rebuild using the GitHub action.  Rebuild will happen if the `dvmhost` project had changes since the last action run.
+    rebuild: false
+    # Set this variable to force the GitHub action to rebuild, regardless of whether the `dvmhost` project had changes since the last action run. `rebuild` *must* be set to `true` for this variable to be considered.
+    force_rebuild: false
+    # Set the required GitHub token for both variables above to be able to trigger the action
+    github_token: "my_github_token"
+
+    ### UFW Variables
+    # Set this to true to enable UFW firewall configuration
+    setup_ufw: true
+    # Set this to true to reset UFW configuration prior to applying the new configuration
+    reset: false
+    # Set this to true to enable port 80 (HTTP) access
+    http: false
+    # Set this to true to enable port 443 (HTTPS) access
+    https: false
+    # Set this to true to open the FNE port (used for non-VPN connections)
+    open_fne_port: true
+
+    ### File Locations
+    rid_config_file: "./dvm-systeminfo/rid_config.yml"
+    tg_config_file: "./dvm-systeminfo/tg_config.yml"
+    peerlist_config_file: "./dvm-systeminfo/peer_list.yml"
+
+  pre_tasks:
+    - name: Include UFW firewall configuration tasks
+      include_tasks: tasks/ufw_tasks.yml
+      when: setup_ufw
+
+    - name: Get private system information
+      include_tasks: tasks/get_system_info.yml
+
+  roles:
+    - fne_role
