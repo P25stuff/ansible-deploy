@@ -1,0 +1,10 @@
+all:
+  children:
+    fne:
+      hosts:
+        fne.hostname.tld:
+          ansible_user: debian
+    sites:
+      hosts:
+        site001.hostname.tld: {}
+        site037.hostname.tld: {}
