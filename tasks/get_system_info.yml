@@ -1,0 +1,36 @@
+---
+- name: Clone system info private repository locally
+  delegate_to: localhost
+  connection: local
+  become: false
+  ansible.builtin.git:
+    repo: git@github.com:P25stuff/system-info.git
+    dest: ./dvm-systeminfo
+    version: main
+
+- name: Read peer data contents into a variable
+  set_fact:
+    peer_data: "{{ lookup('file', './dvm-systeminfo/peer_list.yml') | from_yaml }}"
+
+- name: Generate peer data set_fact
+  set_fact:
+    set_fact_task: "{{ 'peer_' ~ item.peerid ~ '_password: \"' ~ item.peerpassword ~ '\"' }}"
+  loop: "{{ peer_data.peer_list }}"
+
+- name: Generate peer password facts
+  set_fact:
+    peer_passwords: >-
+      {{
+        dict(
+          peer_data.peer_list | map(attribute='peerid') | map('string') |
+          zip(peer_data.peer_list | map(attribute='peerpassword'))
+        )
+      }}
+
+- name: Read LLA keys into a variable
+  set_fact:
+    lla_keys: "{{ lookup('file', './dvm-systeminfo/LLA_keys.yml') | from_yaml }}"
+
+- name: Read FNE data from fne_data.yml
+  set_fact:
+    fne_data: "{{ lookup('file', './dvm-systeminfo/fne_data.yml') | from_yaml }}"
