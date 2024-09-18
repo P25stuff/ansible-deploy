@@ -1,5 +1,17 @@
 # DVM Deployment Playbooks
 
+---
+## IMPORTANT
+**This project is *not* affiliated to DVMProject in *any* way.**
+
+What that means is:
+- It is not actively developed, and not necessarily compatible with the latest version of `dvmhost` or any other DVMProject component
+- It is **absolutely not** supported by DVMProject, any issue should be reported in GitHub issues and may, or likely may not, be fixed
+- You definitely are **not** to go to the DVMProject maintainers to request support
+- TL;dr - this is a project for fun, you're on your own.
+
+---
+
 #### Install the roles:
 ```
 ansible-galaxy install -r roles/requirements.yml -p ./roles
